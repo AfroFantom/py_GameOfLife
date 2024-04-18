@@ -7,6 +7,9 @@ class board:
         self.rows=r
         self.cols=c
         self.seed=seed
+        self.state=[[0 for _ in range(self.cols)]for _ in range(self.rows)]
+    
+    def soupifier(self):
         self.state=[[
             self.randfiller(i,j) for i in range(self.cols)]
             for j in range(self.rows)
@@ -39,7 +42,22 @@ class board:
     
     def nbcount(self,i,j):
         count=0
-        
+        if i==0:
+            if j==0:
+                count+=self.state[i][j+1]+self.state[i+1][j+1]+self.state[i+1][j]
+            if j== self.cols-1:
+                count+=self.state[i][j-1]+self.state[i+1][j-1]+self.state[i+1][j]
+            else:
+                count+=self.state[i][j-1]+self.state[i][j+1]+self.state[i+1][j]+self.state[i+1][j-1]+self.state[i+1][j+1]
+        elif i==self.rows-1:
+            if j==0:
+                count+=self.state[i-1][j]+self.state[i-1][j+1]+self.state[i][j+1]
+            if j==self.cols-1:
+                count+=self.state[i-1][j]+self.state[i-1][j-1]+self.state[i][j-1]
+            else:
+                count+=self.state[i][j-1]+self.state[i][j+1]+self.state[i-1][j]+self.state[i-1][j-1]+self.state[i-1][j+1]
+        else:
+            count+=self.state[i+1][j]+self.state[i+1][j+1]+self.state[i+1][j-1]+self.state[i][j+1]+self.state[i][j-1]+self.state[i-1][j]+self.state[i-1][j-1]+self.state[i-1][j+1]
         return count
 
 
@@ -65,9 +83,11 @@ def main(stdscr):
     while True:
         stdscr.clear()
         obj.print(stdscr)
-        obj.update()
-        #time.sleep(1)
         stdscr.refresh()
+        time.sleep(1)
+        obj.update()
+        
+        
         key=stdscr.getch()
         if key==ord('q'):
             break
