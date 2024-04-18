@@ -65,20 +65,18 @@ class board:
 def main(stdscr):
     '''
         TODO:
-        1.  Build a data structure to store the board state
-        2.  “Pretty-print” the board to the terminal
-        3.  Given a starting board state, calculate the next one
-            - update and refresh/print
-        4.  Run the game forever
+        1. filesaving mechanism 
+        2. make a terminal ui
+        3. config files for rules
+        4. finish nbcount
+        5.https://https://robertheaton.com/2018/07/20/project-2-game-of-life/  
         RULES:
         1. live && count<2 == dead 
         2. live && count==2 OR 3 == live
         3. live && count>3 == dead
         4. dead && count == 3 == live
-        ANCILLARY:
-        1. filesaving mechanism 
-        2. make a terminal ui
-        3. config files for rules 
+        
+         
     '''
     obj=board(10,10)
     while True:
