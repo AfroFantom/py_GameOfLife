@@ -1,3 +1,22 @@
+import random
+
+class board:
+    def __init__(self,r,c,seed=42) -> None:
+        self.rows=r
+        self.cols=c
+        self.seed=seed
+        self.state=[[
+            self.randfiller(i,j,seed) for i in range(self.cols)]
+            for j in range(self.rows)
+        ]
+    
+    def randfiller(self,r,c):
+        random.seed((r*self.seed)+c)
+        return random.randint(0,1)
+    
+    def print():
+
+
 if __name__=="__main__":
     '''
         TODO:
