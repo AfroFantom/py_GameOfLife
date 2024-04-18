@@ -21,24 +21,25 @@ class board:
         return random.randint(0,1)
     
     def print(self,stdscr):
-        r=0
+        c=0
         for i in range(self.rows):
             st=''
             for j in range(self.cols):
                 if self.state[i][j]==1: st+=' * '
                 else: st+=' - '
             #st+='|'     
-            stdscr.addstr(r,0,st)
-            r+=1
+            stdscr.addstr(c,0,st)
+            c+=1
             
     def update(self):
+        new=board(self.rows,self.cols,self.seed)
         for i in range(self.rows):
             for j in range(self.cols):
                 if self.state[i][j]==1: 
                     if self.nbcount(i,j)<2 or self.nbcount(i,j)>3:
                         self.state[i][j]==0
                 elif self.state[i][j]==0 and self.nbcount(i,j)==3:
-                    self.state[i][j]==1
+                        self.state[i][j]==1
     
     def nbcount(self,i,j):
         count=0
