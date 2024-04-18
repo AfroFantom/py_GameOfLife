@@ -6,17 +6,21 @@ class board:
         self.cols=c
         self.seed=seed
         self.state=[[
-            self.randfiller(i,j,seed) for i in range(self.cols)]
+            self.randfiller(i,j) for i in range(self.cols)]
             for j in range(self.rows)
         ]
     
     def randfiller(self,r,c):
-        random.seed((r*self.seed)+c)
+        s=(r*self.seed)+c
+        random.seed(s)
         return random.randint(0,1)
     
-    def print():
-        pass
-
+    def print(self):
+        for i in range(self.rows):
+            temp=[]
+            for j in range(self.cols):
+                temp.append(self.state[i][j])
+            print(temp)
 if __name__=="__main__":
     '''
         TODO:
@@ -30,5 +34,6 @@ if __name__=="__main__":
         2. make a terminal ui
         3. config files for rules 
     '''
-    print("Hello")
+    obj=board(10,10)
+    obj.print()
 
