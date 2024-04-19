@@ -24,16 +24,25 @@ class board:
     
     def update(self):
         new=board(self.rows,self.cols,self.seed)
-        #new.statekiller()
+        new.statekiller()
         for i in range(self.rows):
             for j in range(self.cols):
-                if self.state[i][j]==1: 
-                    if self.nbcount(i,j)==2 or self.nbcount(i,j)==3:
-                        new.state[i][j]==0
-                elif self.state[i][j]==0 and self.nbcount(i,j)==3:
-                        new.state[i][j]==1
+               new.state[i][j]=self.nextCellVal(i,j)
         return new
     
+    def nextCellVal(self,i,j):
+        count=self.nbcount(i,j)
+        if self.state[i][j]==1:
+            if count ==2 or count ==3:
+                return 1
+            else:
+                return 0
+        else:
+            if count == 3:
+                return 1
+            else:
+                return 0
+
     def nbcount(self,i,j):
         count=0
         for x in range((i-1),(i+1)+1):
@@ -76,9 +85,9 @@ if __name__ == "__main__":
         
          
     '''
-    obj=board(5,5,56)
+    obj=board(100,50)
     while True:
         printbrd(obj)
-        time.sleep(0.03)
+        time.sleep(0.3)
         temp_obj=obj.update()
         obj=temp_obj
