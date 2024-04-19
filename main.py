@@ -22,11 +22,12 @@ class board:
     
     def print(self,stdscr):
         c=0
+        self.soupifier()
         for i in range(self.rows):
             st=''
             for j in range(self.cols):
-                if self.state[i][j]==1: st+=' * '
-                else: st+=' - '
+                if self.state[i][j]==1: st+="\u2588"
+                else: st+=' '
             #st+='|'     
             stdscr.addstr(c,0,st)
             c+=1
@@ -69,7 +70,8 @@ def main(stdscr):
         2. make a terminal ui
         3. config files for rules
         4. finish nbcount
-        5.https://https://robertheaton.com/2018/07/20/project-2-game-of-life/  
+        5. https://https://robertheaton.com/2018/07/20/project-2-game-of-life/ for reference
+    
         RULES:
         1. live && count<2 == dead 
         2. live && count==2 OR 3 == live
@@ -78,13 +80,13 @@ def main(stdscr):
         
          
     '''
-    obj=board(10,10)
+    obj=board(100,50)
     while True:
         stdscr.clear()
         obj.print(stdscr)
         stdscr.refresh()
         time.sleep(1)
-        obj.update()
+        ##obj.update()
         
         
         key=stdscr.getch()
