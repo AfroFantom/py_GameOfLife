@@ -1,69 +1,65 @@
 import random
 import time
-from curses import wrapper,newpad,newwin
 
 class board:
     def __init__(self,r,c,seed=42) -> None:
         self.rows=r
         self.cols=c
         self.seed=seed
-        self.state=[[0 for _ in range(self.cols)]for _ in range(self.rows)]
-    
-    def soupifier(self):
         self.state=[[
             self.randfiller(i,j) for i in range(self.cols)]
             for j in range(self.rows)
         ]
     
+    def statekiller(self):
+        self.state=[[
+            0 for _ in range(self.cols)]
+            for _ in range(self.rows)
+        ]
+
     def randfiller(self,r,c):
         s=(r*self.seed)+c
         random.seed(s)
         return random.randint(0,1)
     
-    def print(self,stdscr):
-        c=0
-        self.soupifier()
-        for i in range(self.rows):
-            st=''
-            for j in range(self.cols):
-                if self.state[i][j]==1: st+="\u2588"
-                else: st+=' '
-            #st+='|'     
-            stdscr.addstr(c,0,st)
-            c+=1
-            
     def update(self):
         new=board(self.rows,self.cols,self.seed)
+        #new.statekiller()
         for i in range(self.rows):
             for j in range(self.cols):
                 if self.state[i][j]==1: 
-                    if self.nbcount(i,j)<2 or self.nbcount(i,j)>3:
-                        self.state[i][j]==0
+                    if self.nbcount(i,j)==2 or self.nbcount(i,j)==3:
+                        new.state[i][j]==0
                 elif self.state[i][j]==0 and self.nbcount(i,j)==3:
-                        self.state[i][j]==1
+                        new.state[i][j]==1
+        return new
     
     def nbcount(self,i,j):
         count=0
-        if i==0:
-            if j==0:
-                count+=self.state[i][j+1]+self.state[i+1][j+1]+self.state[i+1][j]
-            if j== self.cols-1:
-                count+=self.state[i][j-1]+self.state[i+1][j-1]+self.state[i+1][j]
-            else:
-                count+=self.state[i][j-1]+self.state[i][j+1]+self.state[i+1][j]+self.state[i+1][j-1]+self.state[i+1][j+1]
-        elif i==self.rows-1:
-            if j==0:
-                count+=self.state[i-1][j]+self.state[i-1][j+1]+self.state[i][j+1]
-            if j==self.cols-1:
-                count+=self.state[i-1][j]+self.state[i-1][j-1]+self.state[i][j-1]
-            else:
-                count+=self.state[i][j-1]+self.state[i][j+1]+self.state[i-1][j]+self.state[i-1][j-1]+self.state[i-1][j+1]
-        else:
-            count+=self.state[i+1][j]+self.state[i+1][j+1]+self.state[i+1][j-1]+self.state[i][j+1]+self.state[i][j-1]+self.state[i-1][j]+self.state[i-1][j-1]+self.state[i-1][j+1]
+        for x in range((i-1),(i+1)+1):
+                if x<0 or x>=self.rows:continue
+                for y in range((j-1),(j+1)+1):
+                    if y<0 or y>=self.cols:continue
+                    if x==i or y==j: continue   
+                    if self.state[x][y]==1:count+=1
+       
         return count
 
+                    
+                    
+def printbrd(board):
+        for i in range(board.rows):
+            st=''
+            for j in range(board.cols):
+                if board.state[i][j]==1: st+="\u2588" *2
+                else: st+=' '*2
+            st+='\n'     
+            print(st)
 
-def main(stdscr):
+        print("-"*board.cols)
+
+
+if __name__ == "__main__":
     '''
         TODO:
         1. filesaving mechanism 
@@ -80,17 +76,9 @@ def main(stdscr):
         
          
     '''
-    obj=board(100,50)
+    obj=board(5,5,56)
     while True:
-        stdscr.clear()
-        obj.print(stdscr)
-        stdscr.refresh()
-        time.sleep(1)
-        ##obj.update()
-        
-        
-        key=stdscr.getch()
-        if key==ord('q'):
-            break
-
-wrapper(main)
+        printbrd(obj)
+        time.sleep(0.03)
+        temp_obj=obj.update()
+        obj=temp_obj
